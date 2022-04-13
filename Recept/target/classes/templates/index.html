@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="layout/main.html">
+<body>
+<div layout:fragment="mainContainer">
+<div class="container mt-5">
+    <form method="post" th:action="@{'/addfood'}">
+        <div class="form-group mb-3">
+            <label class="form-label" th:text="#{label.namefood}"></label>
+            <input type="text" name = "name" class="form-control" th:placeholder="#{label.namefood}" required>
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label" th:text="#{label.pricefood}"></label>
+            <input type="number" name = "price" class="form-control" th:placeholder="#{label.pricefood}" required>
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label" th:text="#{label.amountfood}"></label>
+            <input type="number" name = "amount" class="form-control" th:placeholder="#{label.amountfood}" required>
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label" th:text="#{label.weightfood}"></label>
+            <input type="number" name = "weight" class="form-control" th:placeholder="#{label.weightfood}" required>
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label" th:text="#{label.countryfood}"></label>
+            <select class="form-control" name="country_id">
+                <option th:each="cd : ${countries}" th:text="${cd.name + ' - ' + cd.code}" th:value="${cd.id}"></option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label" th:text="#{label.recipt}"></label>
+            <textarea class="form-control" name = "description" rows="3"></textarea>
+        </div>
+        <div class="mb-3">
+            <button class="btn btn-success" th:text="#{button.addfood}"></button>
+        </div>
+    </form>
+    <form>
+
+    </form>
+</div>
+</div>
+</body>
+</html>

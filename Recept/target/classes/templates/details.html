@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      layout:decorate="layout/main.html">
+<body>
+<div layout:fragment="mainContainer">
+<div class="container mt-5">
+  <form method="post" th:action="@{'/savefood'}" enctype="multipart/form-data">
+    <div th:each="fd : ${food}" class="row">
+      <div class="card mb-3 col-3" style="width: 18rem;">
+        <img th:src="@{(${fd.avatar!=null?'/images/'+fd.avatar+'.jpg':'/images/default.png'})}" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">Food image</h5>
+          <p class="card-text" th:text="#{label.images}+' '+${fd.name}"></p>
+        </div>
+      </div>
+    <input type="hidden" name = "id" th:value="${food.id}">
+      <div class="col-9">
+        <div class="mb-3">
+          <label class="form-label" th:text="#{label.namefood}"></label>
+          <input type="text" name = "name" class="form-control" th:value="${fd.name}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" th:text="#{label.pricefood}"></label>
+          <input type="number" name = "price" class="form-control" th:value="${fd.price}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" th:text="#{label.pricefood}"></label>
+          <input type="number" name = "amount" class="form-control" th:value="${fd.amount}" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" th:text="#{label.weightfood}"></label>
+          <input type="number" name = "weight" class="form-control" th:value="${fd.weight}" required>
+        </div>
+        <div class="form-group mb-3">
+          <label class="form-label" th:text="#{label.countryfood}"></label>
+          <select class="form-control" name="country_id">
+            <option th:each="cd : ${countries}" th:text="${cd.name + ' - ' + cd.code}" th:value="${cd.id}" th:selected="${food.country.id==cd.id}"></option>
+          </select>
+        </div>
+      </div>
+    <div class="mb-3">
+      <label class="form-label" th:text="#{label.recipt}"></label>
+      <textarea class="form-control" name = "description" rows="3" th:text="${fd.description}" required></textarea>
+    </div>
+      <div class="input-group mb-3 mt-3">
+        <input type="file" class="form-control" name="avatar" id="inputGroupFile02">
+        <label class="input-group-text" for="inputGroupFile02" th:text="#{button.upload}"></label>
+      </div>
+    <div class="mb-3">
+      <button class="btn btn-success" th:text="#{button.savefood}"></button>
+      <button type="button" class="btn btn-danger ml-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop" th:text="#{button.delete}">
+      </button>
+    </div>
+    </div>
+  </form>
+
+  <form method="post" th:action="@{'/deletefood'}">
+    <input type="hidden" name = "id" th:value="${food.id}">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <button class="btn btn-primary" th:text="#{button.delete}"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="row mt-3">
+  <div class="col-6 mx-auto">
+    <table class="table table-hover" id="removeTable">
+      <tbody>
+      <tr th:each="cat:${food.categories}">
+        <form th:action="@{'/reassigncategory'}" method="post">
+          <input type="hidden" name = "category_id" th:value="${cat.id}">
+          <input type="hidden" name = "food_id" th:value="${food.id}">
+          <td th:text="${cat.name}"></td>
+          <td width="10%">
+            <button class="btn btn-danger">-</button>
+          </td>
+        </form>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-6 mx-auto">
+    <table class="table table-hover" id="addTable">
+      <tbody>
+      <tr th:each="cat:${category}">
+        <form th:action="@{'/assigncategory'}" method="post">
+          <input type="hidden" name = "category_id" th:value="${cat.id}">
+          <input type="hidden" name = "food_id" th:value="${food.id}">
+          <td th:text="${cat.name}"></td>
+          <td width="10%">
+            <button class="btn btn-success">+</button>
+          </td>
+        </form>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</body>
+</html>
